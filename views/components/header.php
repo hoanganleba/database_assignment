@@ -17,7 +17,7 @@
             <?php if (isset($_SESSION["user_id"]) && $_SESSION['user_id'] != "") { ?>
                 <div class="media">
                     <div class="image is-48x48">
-                        <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" alt="avatar">
+                        <img class="is-rounded" src="public/img/<?php echo $_SESSION["profile_picture"]?>" alt="avatar">
                     </div>
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">

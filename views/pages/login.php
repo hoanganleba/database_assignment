@@ -21,7 +21,7 @@ if (isset($_POST['login'])) {
         $sql = "SELECT * FROM user WHERE email=:email AND password=:password";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam('email', $email, PDO::PARAM_STR);
-        $stmt->bindValue('password', $password, PDO::PARAM_STR);
+        $stmt->bindParam('password', $password, PDO::PARAM_STR);
         $stmt->execute();
         $count = $stmt->rowCount();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -29,6 +29,7 @@ if (isset($_POST['login'])) {
             $_SESSION['user_id'] = $row['ID'];
             $_SESSION['first_name'] = $row['firstName'];
             $_SESSION['last_name'] = $row['lastName'];
+            $_SESSION['profile_picture'] = $row['profilePicture'];
             $_SESSION['role'] = $row['role'];
             header('location: index.php');
         } else {
