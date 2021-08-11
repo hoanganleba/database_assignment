@@ -1,26 +1,26 @@
 <?php
-$email_empty_warning = '';
-$email_input_warning = '';
+$login_info_empty_warning = '';
+$login_info_input_warning = '';
 $password_empty_warning = '';
 $password_input_warning = '';
 $login_warning = '';
 
 if (isset($_POST['login'])) {
-    if ($_POST['email'] == null) {
-        $email_input_warning = 'is-danger';
-        $email_empty_warning = '<p class="help is-danger">Please enter your email</p>';
+    if ($_POST['login_info'] == null) {
+        $login_info_input_warning = 'is-danger';
+        $login_info_empty_warning = '<p class="help is-danger">Please enter your Email or Phone number</p>';
     }
     if ($_POST['password'] == null) {
         $password_input_warning = 'is-danger';
         $password_empty_warning = '<p class="help is-danger">Please enter your password</p>';
     }
-    if ($_POST['email'] && $_POST['password']) {
+    if ($_POST['login_info'] && $_POST['password']) {
         require 'core/database.php';
-        $email = $_POST['email'];
+        $login_info = $_POST['login_info'];
         $password = $_POST['password'];
-        $sql = "SELECT * FROM user WHERE email=:email AND password=:password";
+        $sql = "SELECT * FROM user WHERE (email=:login_info OR phoneNumber=:login_info) AND password=:password";
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam('email', $email, PDO::PARAM_STR);
+        $stmt->bindParam('login_info', $login_info, PDO::PARAM_STR);
         $stmt->bindParam('password', $password, PDO::PARAM_STR);
         $stmt->execute();
         $count = $stmt->rowCount();
@@ -36,7 +36,7 @@ if (isset($_POST['login'])) {
             $login_warning =
                 '<div class="notification is-danger is-light">
                     <strong>Login failed</strong>
-                <p>Your email or password is not correct. Please try again.</p>
+                <p>Invalid login info. Please try again.</p>
                 </div>';
         }
     }
@@ -48,12 +48,12 @@ if (isset($_POST['login'])) {
         <?php echo $login_warning ?>
         <form action="?controller=login" class="box" method="post">
             <div class="field">
-                <label for="email" class="label">Email</label>
+                <label for="login_info" class="label">Email / Phone number</label>
                 <div class="control">
-                    <input name="email" id="email" class="input <?php echo $email_input_warning ?>" type="email"
-                           placeholder="e.g. alex@example.com">
+                    <input name="login_info" id="login_info" class="input <?php echo $login_info_input_warning ?>" type="text"
+                           placeholder="e.g. alex@example.com or 09021920">
                 </div>
-                <?php echo $email_empty_warning ?>
+                <?php echo $login_info_empty_warning ?>
             </div>
 
             <div class="field">
@@ -65,7 +65,7 @@ if (isset($_POST['login'])) {
                 <?php echo $password_empty_warning ?>
             </div>
 
-            <button type="submit" name="login" value="Login" class="button is-warning is-fullwidth">Login</button>
+            <button type="submit" name="login" value="login" class="button is-primary is-fullwidth">Login</button>
         </form>
     </div>
 </div>
