@@ -35,15 +35,14 @@ VALUES (1, 'admin', 'example', '01647474', '123 someplace', 'HCM', 'VN', 'profil
         '123',
         'admin');
 
-INSERT INTO product
-VALUES (1, 'https://cdn.tgdd.vn/Products/Images/42/193569/razer-phone-2-600x600.jpg', 'Razer phone', 100, 100,
+VALUES (1, 'https://m.media-amazon.com/images/I/61tfletWziL._AC_SL1073_.jpg', 'Razer phone 1', 100, 100,
         '2021-08-11 19:00:00', 1);
 INSERT INTO product
-VALUES (2, 'https://cdn.tgdd.vn/Products/Images/42/193569/razer-phone-2-600x600.jpg', 'Razer phone', 100, 100,
+VALUES (2, 'https://cdn.tgdd.vn/Products/Images/42/193569/razer-phone-2-600x600.jpg', 'Razer phone 2', 200, 200,
         '2021-08-11 19:00:00', 1);
 INSERT INTO product
-VALUES (3, 'https://cdn.tgdd.vn/Products/Images/42/193569/razer-phone-2-600x600.jpg', 'Razer phone', 100, 100,
+VALUES (3, 'https://techshark.vn/wp-content/uploads/2020/07/asus-rog-phone-1-8gb-128gb.jpg', 'ASUS ROG phone 1', 300, 300,
         '2021-08-11 19:00:00', 1);
 INSERT INTO product
-VALUES (4, 'https://cdn.tgdd.vn/Products/Images/42/193569/razer-phone-2-600x600.jpg', 'Razer phone', 100, 100,
+VALUES (4, 'https://cdn.tgdd.vn/Products/Images/42/204088/asus-rog-phone-2-1-600x600.jpg', 'ASUS ROG phone 2', 400, 400,
         '2021-08-11 19:00:00', 1);
