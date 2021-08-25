@@ -35,6 +35,7 @@ VALUES (1, 'admin', 'example', '01647474', '123 someplace', 'HCM', 'VN', 'profil
         '123',
         'admin');
 
+INSERT INTO product
 VALUES (1, 'https://m.media-amazon.com/images/I/61tfletWziL._AC_SL1073_.jpg', 'Razer phone 1', 100, 100,
         '2021-08-11 19:00:00', 1);
 INSERT INTO product
