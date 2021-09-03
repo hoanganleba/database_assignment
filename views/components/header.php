@@ -16,30 +16,30 @@
 
             <div class="navbar-end">
                 <?php if (isset($_SESSION["user_id"]) && $_SESSION['user_id'] != "") { ?>
-                    <div class="media">
-                        <div class="image is-48x48">
-                            <img class="is-rounded" src="<?php echo $_SESSION["profile_picture"] ?>" alt="avatar">
-                        </div>
-                        <div class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link">
-                                <?php echo $_SESSION["first_name"] ?>
-                                <?php echo $_SESSION["last_name"] ?>
-                            </a>
-                            <br/>
-                            <div class="navbar-dropdown">
-                                <a class="navbar-item">
-                                    About
-                                </a>
-                                <a class="navbar-item">
-                                    Jobs
-                                </a>
-                                <a class="navbar-item">
-                                    Contact
-                                </a>
-                                <a class="navbar-item" href="?controller=logout">
-                                    Logout
-                                </a>
+                    <div class="navbar-item">
+                        <a href="?controller=createNewProductBid" class="button is-primary">
+                            <strong>Create New Product Bid</strong>
+                        </a>
+                    </div>
+                    <div class="image is-64x64">
+                        <img src="<?php echo $_SESSION["profile_pic"] ?>" alt="avatar">
+                    </div>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            <?php echo $_SESSION["last_name"] ?>
+                            <?php echo $_SESSION["first_name"] ?>
+                        </a>
+                        <br/>
+                        <div class="navbar-dropdown">
+                            <div class="navbar-item">
+                                Balance:
+                                <span class="ml-2">
+                                   <strong> <?php echo $_SESSION["balance"] ?> $</strong>
+                                </span>
                             </div>
+                            <a class="navbar-item" href="?controller=logout">
+                                Logout
+                            </a>
                         </div>
                     </div>
                 <?php } else { ?>

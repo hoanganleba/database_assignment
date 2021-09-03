@@ -1,9 +1,5 @@
 <?php
-if (isset($_GET['controller'])) {
-    $controller = $_GET['controller'];
-} else {
-    $controller = '';
-}
+$controller = $_GET['controller'] ?? '';
 
 switch ($controller) {
     case 'register':
@@ -14,6 +10,16 @@ switch ($controller) {
         break;
     case 'logout':
         require 'views/pages/logout.php';
+        break;
+    case 'createNewProductBid':
+        require 'views/pages/createNewProductBid.php';
+        break;
+    case 'customers':
+        if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
+            require 'views/pages/admin/customers.php';
+        } else {
+            require 'views/pages/home.php';
+        }
         break;
     default:
         if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {

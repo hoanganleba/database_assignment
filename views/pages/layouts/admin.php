@@ -17,21 +17,9 @@
                         <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" alt="avatar">
                     </div>
                     <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link">
-                            <?php echo $_SESSION["first_name"] ?>
-                            <?php echo $_SESSION["last_name"] ?>
-                        </a>
+                        <a class="navbar-link">Admin</a>
                         <br/>
                         <div class="navbar-dropdown">
-                            <a class="navbar-item">
-                                About
-                            </a>
-                            <a class="navbar-item">
-                                Jobs
-                            </a>
-                            <a class="navbar-item">
-                                Contact
-                            </a>
                             <a class="navbar-item" href="?controller=logout">
                                 Logout
                             </a>
@@ -42,7 +30,21 @@
         </div>
     </div>
 </nav>
-<?php
-require 'core/controller.php';
-?>
-
+<div class="container mt-5">
+    <div class="columns">
+        <div class="column is-2">
+            <aside class="menu is-hidden-mobile">
+                <p class="menu-label">
+                    General
+                </p>
+                <ul class="menu-list">
+                    <li><a href="?controller=dashboard">Dashboard</a></li>
+                    <li><a href="?controller=customers">Customers</a></li>
+                </ul>
+            </aside>
+        </div>
+        <div class="column is-10">
+            <?php require 'core/controller.php'; ?>
+        </div>
+    </div>
+</div>

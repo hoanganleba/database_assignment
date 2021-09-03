@@ -18,19 +18,37 @@ if (isset($_POST['login'])) {
         require 'core/database.php';
         $login_info = $_POST['login_info'];
         $password = $_POST['password'];
-        $sql = "SELECT * FROM user WHERE (email=:login_info OR phoneNumber=:login_info) AND password=:password";
+        $sql = "
+            SELECT * FROM user 
+            JOIN role r on user.role_id = r.id 
+            WHERE (email=:login_info OR phoneNum=:login_info) AND password=:password";
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam('login_info', $login_info, PDO::PARAM_STR);
-        $stmt->bindParam('password', $password, PDO::PARAM_STR);
+        $stmt->bindParam('login_info', $login_info);
+        $stmt->bindParam('password', $password);
         $stmt->execute();
         $count = $stmt->rowCount();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($count == 1 && !empty($row)) {
-            $_SESSION['user_id'] = $row['ID'];
-            $_SESSION['first_name'] = $row['firstName'];
-            $_SESSION['last_name'] = $row['lastName'];
-            $_SESSION['profile_picture'] = $row['profilePicture'];
-            $_SESSION['role'] = $row['role'];
+            if ($row['type'] != 'admin') {
+                $sql = "
+                    SELECT user_id, first_name, last_name, profile_pic, type, balance FROM user
+                    JOIN role r on user.role_id = r.id
+                    JOIN customer c on user.id = c.user_id
+                    JOIN wallet w on c.id = w.customer_id
+                    WHERE (email=:login_info OR phoneNum=:login_info) AND password=:password;";
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam('login_info', $login_info);
+                $stmt->bindParam('password', $password);
+                $stmt->execute();
+                $count = $stmt->rowCount();
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $_SESSION['user_id'] = $row['user_id'];
+                $_SESSION['balance'] = $row['balance'];
+                $_SESSION['first_name'] = $row['first_name'];
+                $_SESSION['last_name'] = $row['last_name'];
+                $_SESSION['profile_pic'] = $row['profile_pic'];
+            }
+            $_SESSION['role'] = $row['type'];
             header('location: index.php');
         } else {
             $login_warning =
@@ -50,7 +68,8 @@ if (isset($_POST['login'])) {
             <div class="field">
                 <label for="login_info" class="label">Email / Phone number</label>
                 <div class="control">
-                    <input name="login_info" id="login_info" class="input <?php echo $login_info_input_warning ?>" type="text"
+                    <input name="login_info" id="login_info" class="input <?php echo $login_info_input_warning ?>"
+                           type="text"
                            placeholder="e.g. alex@example.com or 09021920">
                 </div>
                 <?php echo $login_info_empty_warning ?>
@@ -65,7 +84,9 @@ if (isset($_POST['login'])) {
                 <?php echo $password_empty_warning ?>
             </div>
 
-            <button type="submit" name="login" value="login" class="button is-primary is-fullwidth">Login</button>
+            <button type="submit" name="login" value="login" class="button is-primary is-fullwidth">
+                <strong>Login</strong>
+            </button>
         </form>
     </div>
 </div>

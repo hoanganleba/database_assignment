@@ -45,7 +45,6 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
                 });
             });
         }
-
     });
 
     const fileInput = document.querySelector('#file-js-example input[type=file]');

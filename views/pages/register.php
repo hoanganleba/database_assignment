@@ -24,20 +24,43 @@ if (isset($_POST['register'])) {
         $phoneNumber = $_POST['phoneNumber'];
         $email = $_POST['email'];
         $password = $_POST['password'];
+        $created_at = date('Y-m-d H:i:s');
+        $branch_code = 50;
         $message = '';
 
-        $sql = "INSERT INTO user (firstName,lastName,identificationNumber,address,city,country,profilePicture,email,phoneNumber,password, role) VALUES (:firstname, :lastname, :identificationNumber, :address, :city, :country, :profilePicture, :email, :phoneNumber, :password, 'user')";
+        // Create user login
+        $create_user_sql = "INSERT INTO user(email, phoneNum, password, role_id) VALUES (:email, :phoneNum, :password, 2)";
+        $create_user_stmt = $conn->prepare($create_user_sql);
+        $create_user_stmt->bindParam('email', $email);
+        $create_user_stmt->bindParam('phoneNum', $phoneNumber);
+        $create_user_stmt->bindParam('password', $password);
+        $create_user_stmt->execute();
+
+        $get_user_sql = "SELECT user.id FROM user 
+            JOIN role r on user.role_id = r.id 
+            WHERE (email=:email OR phoneNum=:phoneNum) AND password=:password";
+        $get_user_stmt = $conn->prepare($get_user_sql);
+        $get_user_stmt->bindParam('email', $email);
+        $get_user_stmt->bindParam('phoneNum', $phoneNumber);
+        $get_user_stmt->bindParam('password', $password);
+        $get_user_stmt->execute();
+        $user_row = $get_user_stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Add customer info
+        $sql = "
+            INSERT INTO customer (last_name, first_name, created_at, branch_code, address, city, country, identification_num, profile_pic, user_id) 
+            VALUES (:last_name, :first_name, :created_at, :branch_code, :address, :country, :city, :identification_num, :profile_pic, :user_id)";
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam('firstname', $firstname, PDO::PARAM_STR);
-        $stmt->bindParam('lastname', $lastname, PDO::PARAM_STR);
-        $stmt->bindParam('identificationNumber', $identificationNumber, PDO::PARAM_STR);
-        $stmt->bindParam('address', $address, PDO::PARAM_STR);
-        $stmt->bindParam('city', $city, PDO::PARAM_STR);
-        $stmt->bindParam('country', $country, PDO::PARAM_STR);
-        $stmt->bindParam('profilePicture', $profilePicture, PDO::PARAM_STR);
-        $stmt->bindParam('phoneNumber', $phoneNumber, PDO::PARAM_STR);
-        $stmt->bindParam('email', $email, PDO::PARAM_STR);
-        $stmt->bindParam('password', $password, PDO::PARAM_STR);
+        $stmt->bindParam('last_name', $lastname);
+        $stmt->bindParam('first_name', $firstname);
+        $stmt->bindParam('created_at', $created_at);
+        $stmt->bindParam('branch_code', $branch_code);
+        $stmt->bindParam('identification_num', $identificationNumber);
+        $stmt->bindParam('address', $address);
+        $stmt->bindParam('city', $city);
+        $stmt->bindParam('country', $country);
+        $stmt->bindParam('profile_pic', $profilePicture);
+        $stmt->bindParam('user_id', $user_row['id']);
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
             header('location: ?controller=login');
@@ -115,10 +138,13 @@ if (isset($_POST['register'])) {
             <div class="field">
                 <label for="profilePicture" class="label">Profile Picture</label>
                 <div class="control">
-                    <input id="profilePicture" name="profilePicture" class="input" type="text" placeholder="e.g. alex@example.com">
+                    <input id="profilePicture" name="profilePicture" class="input" type="text"
+                           placeholder="e.g. alex@example.com">
                 </div>
             </div>
-            <button type="submit" name="register" value="register" class="button is-primary">Sign up</button>
+            <button type="submit" name="register" value="register" class="button is-primary">
+                <strong>Sign up</strong>
+            </button>
         </form>
     </div>
 </div>
