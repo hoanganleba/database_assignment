@@ -1,7 +1,7 @@
 <?php
 $servername = 'localhost';
 $username = 'root';
-$password = 'root';
+$password = 'root123!';
 $db_name = 'assignment';
 $conn = '';
 

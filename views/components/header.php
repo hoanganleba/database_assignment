@@ -37,6 +37,9 @@
                                    <strong> <?php echo $_SESSION["balance"] ?> $</strong>
                                 </span>
                             </div>
+                            <a class="navbar-item" href="?controller=bidHistory">
+                                Bid history
+                            </a>
                             <a class="navbar-item" href="?controller=logout">
                                 Logout
                             </a>

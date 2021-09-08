@@ -40,8 +40,16 @@ CREATE TABLE `bid`
 (
     `bid_id`      int PRIMARY KEY AUTO_INCREMENT,
     `customer_id` int,
-    `product_id`  int,
+    `product_id`  varchar(255),
     `value`       int
+);
+
+CREATE TABLE `transaction`
+(
+    `id`                 int PRIMARY KEY AUTO_INCREMENT,
+    `seller_id`          int,
+    `buyer_id`           int,
+    `transaction_date`   timestamp
 );
 
 CREATE TABLE `wallet`
@@ -55,6 +63,12 @@ ALTER TABLE `customer`
 
 ALTER TABLE `wallet`
     ADD FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`);
+
+ALTER TABLE `transaction`
+    ADD FOREIGN KEY (`seller_id`) REFERENCES `customer` (`id`);
+
+ALTER TABLE `transaction`
+    ADD FOREIGN KEY (`buyer_id`) REFERENCES `customer` (`id`);
 
 ALTER TABLE `customer`
     ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);

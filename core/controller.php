@@ -14,6 +14,9 @@ switch ($controller) {
     case 'createNewProductBid':
         require 'views/pages/createNewProductBid.php';
         break;
+    case 'bidHistory':
+        require 'views/pages/bidHistory.php';
+        break;
     case 'customers':
         if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
             require 'views/pages/admin/customers.php';

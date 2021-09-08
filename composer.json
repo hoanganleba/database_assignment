@@ -1,6 +1,7 @@
 {
-    "require": {
-        "mongodb/mongodb": "^1.9",
-        "ext-pdo": "*"
-    }
+  "require": {
+    "mongodb/mongodb": "^1.9",
+    "ext-pdo": "*",
+    "ext-mongodb": "*"
+  }
 }
