@@ -8,22 +8,32 @@ $collection = $client->auction->products;
 $message = '';
 $type_message = '';
 $data = $collection->find([]);
-if(isset($_POST['asc'])) {
-    if(!empty($_POST['select'])) {
+if (isset($_POST['asc'])) {
+    if (!empty($_POST['select'])) {
         $selected = $_POST['select'];
         $data = $collection->find([], ['sort' => [$selected => 1]]);
     } else {
         echo 'Please select the value.';
     }
 }
-if(isset($_POST['desc'])) {
-    if(!empty($_POST['select'])) {
+if (isset($_POST['desc'])) {
+    if (!empty($_POST['select'])) {
         $selected = $_POST['select'];
         $data = $collection->find([], ['sort' => [$selected => -1]]);
     } else {
         echo 'Please select the value.';
     }
 }
+
+if (isset($_POST['transaction'])) {
+    if ($_POST['current_price'] && $_POST['seller_id'] && $_POST['buyer_id']) {
+        require('views/services/transaction.php');
+        transaction($_POST['current_price'], $_POST['seller_id'], $_POST['buyer_id']);
+        $message = 'Transaction successfully';
+        $type_message = 'is-success';
+    }
+}
+
 if (isset($_POST['bid'])) {
     if (
         $_POST['bid_value'] &&
@@ -133,6 +143,25 @@ if (isset($_POST['bid'])) {
                                 <?php echo check_date($product['closeTime']) ?>
                             </span>
                         </p>
+                        <form method="post" action="?">
+                            <?php
+                            $get_customer_max_bid_sql = "SELECT customer_id, MAX(value) FROM bid WHERE product_id=:product_id GROUP BY customer_id";
+                            $get_customer_max_bid_stmt = $conn->prepare($get_customer_max_bid_sql);
+                            $get_customer_max_bid_stmt->bindParam('product_id', $product_id);
+                            $get_customer_max_bid_stmt->execute();
+                            $bid_row = $get_customer_max_bid_stmt->fetch(PDO::FETCH_ASSOC);
+                            ?>
+                            <input aria-label="current_price" type="hidden" id="current_price" name="current_price"
+                                   value="<?php echo $row['value']; ?>"
+                            >
+                            <input aria-label="seller_id" type="hidden" id="seller_id" name="seller_id"
+                                   value="<?php echo $product["belong_to"]["user_id"]; ?>"
+                            >
+                            <input aria-label="buyer_id" type="hidden" id="buyer_id" name="buyer_id"
+                                   value="<?php echo $bid_row['customer_id']; ?>"
+                            >
+                            <button name="transaction" value="transaction" type="submit">Transaction</button>
+                        </form>
                     </div>
                     <article class="media">
                         <figure class="media-left">

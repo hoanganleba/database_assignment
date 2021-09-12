@@ -62,6 +62,18 @@ if (isset($_POST['register'])) {
         $stmt->bindParam('profile_pic', $profilePicture);
         $stmt->bindParam('user_id', $user_row['id']);
         $stmt->execute();
+
+        $get_customer_sql = "SELECT id FROM customer WHERE user_id=:user_id";
+        $get_customer_id_stmt = $conn->prepare($get_customer_sql);
+        $get_customer_id_stmt->bindParam('user_id', $user_row['id']);
+        $get_customer_id_stmt->execute();
+        $customer_row = $get_customer_id_stmt->fetch(PDO::FETCH_ASSOC);
+
+        $add_wallet_sql = "INSERT INTO wallet (customer_id, balance) VALUES (:customer_id, 0)";
+        $add_wallet_stmt = $conn->prepare($add_wallet_sql);
+        $add_wallet_stmt->bindParam('customer_id', $customer_row['id']);
+        $add_wallet_stmt->execute();
+
         if ($stmt->rowCount() > 0) {
             header('location: ?controller=login');
         }

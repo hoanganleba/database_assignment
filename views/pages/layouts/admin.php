@@ -40,6 +40,7 @@
                 <ul class="menu-list">
                     <li><a href="?controller=dashboard">Dashboard</a></li>
                     <li><a href="?controller=customers">Customers</a></li>
+                    <li><a href="?controller=transactions">Transactions</a></li>
                 </ul>
             </aside>
         </div>

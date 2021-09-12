@@ -17,6 +17,13 @@ switch ($controller) {
     case 'bidHistory':
         require 'views/pages/bidHistory.php';
         break;
+    case 'transactions':
+        if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
+            require 'views/pages/admin/transactions.php';
+        } else {
+            require 'views/pages/home.php';
+        }
+        break;
     case 'customers':
         if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
             require 'views/pages/admin/customers.php';
